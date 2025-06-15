@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Telescope Sniper - Working Version</title>
+    <title>Telescope Sniper Elite - Professional Edition</title>
     <script src="https://unpkg.com/kaboom@3000/dist/kaboom.js"></script>
     <style>
         body, html { 
@@ -15,23 +15,29 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            font-family: 'Arial', sans-serif;
         }
         canvas { 
-            border: 2px solid #333;
             max-width: 100vw;
             max-height: 100vh;
+            border: 1px solid #333;
         }
     </style>
 </head>
 <body>
     <script>
-        // Initialize Kaboom
+        // Initialize Kaboom with responsive design
         kaboom({
-            width: 800,
-            height: 600,
-            background: [20, 20, 40],
+            width: 1024,
+            height: 768,
+            letterbox: true,
+            touchToMouse: true,
+            background: [5, 5, 15],
             crisp: true
         });
+
+        // Load background sprites
+        loadSprite("stars", "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAyNCIgaGVpZ2h0PSI3NjgiIHZpZXdCb3g9IjAgMCAxMDI0IDc2OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEwMjQiIGhlaWdodD0iNzY4IiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMF8xKSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzBfMSIgeDE9IjUxMiIgeTE9IjAiIHgyPSI1MTIiIHkyPSI3NjgiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzAwMDUxNSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMDAwMDAiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K");
 
         // Game state
         let gameState = {
@@ -42,121 +48,344 @@
             combo: 1,
             wave: 1,
             targetsLeft: 5,
-            gameActive: false
+            gameActive: false,
+            weapon: 'SNIPER',
+            weaponMenuOpen: false
         };
 
-        // Create crosshair/scope
-        const crosshair = add([
-            pos(center()),
-            circle(100),
-            outline(4, RED),
-            fixed(),
-            z(100)
-        ]);
+        // Weapon configurations
+        const weapons = {
+            SNIPER: { 
+                ammo: 6, 
+                damage: 100, 
+                reload: 2, 
+                color: [0, 255, 0],
+                crosshair: 'precise'
+            },
+            SHOTGUN: { 
+                ammo: 2, 
+                damage: 150, 
+                reload: 3, 
+                color: [255, 165, 0],
+                crosshair: 'spread'
+            },
+            RIFLE: { 
+                ammo: 30, 
+                damage: 75, 
+                reload: 1.5, 
+                color: [255, 0, 0],
+                crosshair: 'rapid'
+            }
+        };
 
-        // Crosshair lines
-        add([
-            pos(center().sub(20, 0)),
-            rect(40, 2),
-            color(RED),
-            fixed(),
-            z(101)
-        ]);
-        add([
-            pos(center().sub(0, 20)),
-            rect(2, 40),
-            color(RED),
-            fixed(),
-            z(101)
-        ]);
+        // Create animated starfield background
+        function createStarfield() {
+            for (let i = 0; i < 100; i++) {
+                add([
+                    circle(rand(1, 3)),
+                    pos(rand(0, width()), rand(0, height())),
+                    color(255, 255, 255, rand(0.3, 1)),
+                    fixed(),
+                    z(-10),
+                    {
+                        speed: rand(10, 50),
+                        update() {
+                            this.pos.y += this.speed * dt();
+                            if (this.pos.y > height()) {
+                                this.pos.y = -10;
+                                this.pos.x = rand(0, width());
+                            }
+                        }
+                    }
+                ]);
+            }
+        }
 
-        // UI Elements
-        const scoreText = add([
-            text("Score: 0", { size: 24 }),
-            pos(20, 20),
-            fixed(),
-            z(100)
-        ]);
+        // Create dynamic crosshair based on weapon
+        function createCrosshair() {
+            const weapon = weapons[gameState.weapon];
+            const crosshairColor = weapon.color;
+            
+            // Remove old crosshair
+            destroyAll("crosshair");
+            
+            if (weapon.crosshair === 'precise') {
+                // Sniper scope
+                add([
+                    pos(center()),
+                    circle(80),
+                    outline(2, crosshairColor),
+                    fixed(),
+                    z(50),
+                    "crosshair"
+                ]);
+                
+                // Crosshair lines
+                add([
+                    pos(center().sub(15, 0)),
+                    rect(30, 1),
+                    color(...crosshairColor),
+                    fixed(),
+                    z(51),
+                    "crosshair"
+                ]);
+                add([
+                    pos(center().sub(0, 15)),
+                    rect(1, 30),
+                    color(...crosshairColor),
+                    fixed(),
+                    z(51),
+                    "crosshair"
+                ]);
+            } else if (weapon.crosshair === 'spread') {
+                // Shotgun spread indicator
+                add([
+                    pos(center()),
+                    circle(120),
+                    outline(2, crosshairColor),
+                    opacity(0.5),
+                    fixed(),
+                    z(50),
+                    "crosshair"
+                ]);
+            } else if (weapon.crosshair === 'rapid') {
+                // Rifle red dot
+                add([
+                    pos(center()),
+                    circle(5),
+                    color(...crosshairColor),
+                    fixed(),
+                    z(51),
+                    "crosshair"
+                ]);
+            }
+        }
 
-        const ammoText = add([
-            text("Ammo: 6/6", { size: 24 }),
-            pos(width() - 20, 20),
-            anchor("topright"),
-            fixed(),
-            z(100)
-        ]);
+        // Responsive UI system
+        function createResponsiveUI() {
+            // Score (top-left)
+            const scoreText = add([
+                text("Score: 0", { size: Math.min(width() * 0.03, 32) }),
+                pos(width() * 0.02, height() * 0.02),
+                fixed(),
+                z(100),
+                "ui"
+            ]);
 
-        const waveText = add([
-            text("Wave: 1", { size: 24 }),
-            pos(center().x, 20),
-            anchor("top"),
-            fixed(),
-            z(100)
-        ]);
+            // Ammo (top-right)
+            const ammoText = add([
+                text("Ammo: 6/6", { size: Math.min(width() * 0.025, 28) }),
+                pos(width() * 0.98, height() * 0.02),
+                anchor("topright"),
+                fixed(),
+                z(100),
+                "ui"
+            ]);
 
-        // Fire button for mobile
-        const fireButton = add([
-            pos(width() - 80, height() - 80),
-            circle(50),
-            color(255, 0, 0, 0.7),
-            outline(3, WHITE),
-            area(),
-            fixed(),
-            z(200),
-            "fireBtn"
-        ]);
+            // Wave info (top-center)
+            const waveText = add([
+                text("Wave: 1", { size: Math.min(width() * 0.025, 28) }),
+                pos(width() * 0.5, height() * 0.02),
+                anchor("top"),
+                fixed(),
+                z(100),
+                "ui"
+            ]);
 
-        add([
-            text("FIRE", { size: 16 }),
-            pos(width() - 80, height() - 80),
-            anchor("center"),
-            fixed(),
-            z(201)
-        ]);
+            // Weapon indicator (bottom-left)
+            const weaponText = add([
+                text("SNIPER", { size: Math.min(width() * 0.025, 28) }),
+                pos(width() * 0.02, height() * 0.98),
+                anchor("botleft"),
+                fixed(),
+                z(100),
+                color(...weapons[gameState.weapon].color),
+                "ui"
+            ]);
 
-        // Reload button
-        const reloadButton = add([
-            pos(width() - 200, height() - 80),
-            rect(100, 60),
-            color(0, 0, 255, 0.7),
-            outline(3, WHITE),
-            area(),
-            fixed(),
-            z(200),
-            "reloadBtn"
-        ]);
+            return { scoreText, ammoText, waveText, weaponText };
+        }
 
-        add([
-            text("RELOAD", { size: 14 }),
-            pos(width() - 150, height() - 80),
-            anchor("center"),
-            fixed(),
-            z(201)
-        ]);
+        // Mobile control buttons
+        function createMobileControls() {
+            const buttonSize = Math.min(width() * 0.08, 80);
+            
+            // Fire button (bottom-right)
+            const fireButton = add([
+                pos(width() * 0.95, height() * 0.9),
+                circle(buttonSize),
+                color(255, 0, 0, 0.8),
+                outline(3, [255, 255, 255]),
+                area(),
+                fixed(),
+                z(200),
+                "fireBtn"
+            ]);
 
-        // Instructions
-        const instructions = add([
-            text("Click to aim and shoot!\nUse FIRE button on mobile", { 
-                size: 20, 
-                align: "center" 
-            }),
-            pos(center().x, center().y + 150),
-            anchor("center"),
-            fixed(),
-            z(100)
-        ]);
+            add([
+                text("FIRE", { size: buttonSize * 0.2 }),
+                pos(width() * 0.95, height() * 0.9),
+                anchor("center"),
+                fixed(),
+                z(201),
+                color(255, 255, 255)
+            ]);
 
-        // Target spawning
+            // Reload button (bottom-right, above fire)
+            const reloadButton = add([
+                pos(width() * 0.95, height() * 0.75),
+                rect(buttonSize * 1.5, buttonSize * 0.8),
+                color(0, 0, 255, 0.8),
+                outline(3, [255, 255, 255]),
+                area(),
+                fixed(),
+                z(200),
+                "reloadBtn"
+            ]);
+
+            add([
+                text("RELOAD", { size: buttonSize * 0.15 }),
+                pos(width() * 0.95, height() * 0.75),
+                anchor("center"),
+                fixed(),
+                z(201),
+                color(255, 255, 255)
+            ]);
+
+            // Weapon select button (bottom-left)
+            const weaponButton = add([
+                pos(width() * 0.05, height() * 0.9),
+                rect(buttonSize * 1.2, buttonSize * 0.8),
+                color(100, 100, 100, 0.8),
+                outline(3, [255, 255, 255]),
+                area(),
+                fixed(),
+                z(200),
+                "weaponBtn"
+            ]);
+
+            add([
+                text("WEAPON", { size: buttonSize * 0.12 }),
+                pos(width() * 0.05, height() * 0.9),
+                anchor("center"),
+                fixed(),
+                z(201),
+                color(255, 255, 255)
+            ]);
+
+            return { fireButton, reloadButton, weaponButton };
+        }
+
+        // Weapon selection menu
+        function createWeaponMenu() {
+            if (gameState.weaponMenuOpen) return;
+            
+            gameState.weaponMenuOpen = true;
+            const menuBg = add([
+                rect(width() * 0.4, height() * 0.6),
+                pos(center()),
+                color(0, 0, 0, 0.9),
+                outline(3, [255, 255, 255]),
+                anchor("center"),
+                fixed(),
+                z(300),
+                "weaponMenu"
+            ]);
+
+            add([
+                text("SELECT WEAPON", { size: 24 }),
+                pos(center().x, center().y - height() * 0.25),
+                anchor("center"),
+                fixed(),
+                z(301),
+                "weaponMenu"
+            ]);
+
+            Object.keys(weapons).forEach((weaponName, index) => {
+                const weapon = weapons[weaponName];
+                const yPos = center().y - height() * 0.1 + (index * height() * 0.08);
+                
+                const weaponBtn = add([
+                    rect(width() * 0.3, height() * 0.06),
+                    pos(center().x, yPos),
+                    color(...weapon.color, 0.7),
+                    outline(2, [255, 255, 255]),
+                    area(),
+                    anchor("center"),
+                    fixed(),
+                    z(301),
+                    "weaponMenu",
+                    { weaponType: weaponName }
+                ]);
+
+                add([
+                    text(`${weaponName} (${weapon.ammo} rounds)`, { size: 18 }),
+                    pos(center().x, yPos),
+                    anchor("center"),
+                    fixed(),
+                    z(302),
+                    "weaponMenu"
+                ]);
+
+                weaponBtn.onClick(() => {
+                    gameState.weapon = weaponName;
+                    gameState.ammo = weapon.ammo;
+                    gameState.maxAmmo = weapon.ammo;
+                    createCrosshair();
+                    destroyAll("weaponMenu");
+                    gameState.weaponMenuOpen = false;
+                });
+            });
+
+            // Close button
+            const closeBtn = add([
+                rect(width() * 0.1, height() * 0.05),
+                pos(center().x, center().y + height() * 0.2),
+                color(255, 0, 0, 0.8),
+                outline(2, [255, 255, 255]),
+                area(),
+                anchor("center"),
+                fixed(),
+                z(301),
+                "weaponMenu"
+            ]);
+
+            add([
+                text("CLOSE", { size: 16 }),
+                pos(center().x, center().y + height() * 0.2),
+                anchor("center"),
+                fixed(),
+                z(302),
+                "weaponMenu"
+            ]);
+
+            closeBtn.onClick(() => {
+                destroyAll("weaponMenu");
+                gameState.weaponMenuOpen = false;
+            });
+        }
+
+        // Enhanced target spawning
         function spawnTarget() {
+            const colors = [
+                [255, 100, 100], // Red
+                [100, 255, 100], // Green
+                [100, 100, 255], // Blue
+                [255, 255, 100], // Yellow
+                [255, 100, 255]  // Magenta
+            ];
+
             const target = add([
                 rect(40, 40),
-                pos(rand(100, width() - 100), rand(100, height() - 100)),
-                color(rand(100, 255), rand(50, 150), rand(50, 150)),
+                pos(rand(50, width() - 50), rand(50, height() - 50)),
+                color(...choose(colors)),
                 area(),
+                outline(2, [255, 255, 255]),
                 "target",
                 {
-                    speed: rand(50, 150),
-                    direction: rand(0, 360)
+                    speed: rand(60 + gameState.wave * 10, 120 + gameState.wave * 15),
+                    direction: rand(0, 360),
+                    health: gameState.wave > 3 ? 2 : 1
                 }
             ]);
 
@@ -166,62 +395,92 @@
                     Math.sin(target.direction) * target.speed
                 );
 
-                // Bounce off walls
-                if (target.pos.x < 0 || target.pos.x > width()) {
-                    target.direction = Math.PI - target.direction;
+                // Bounce off walls with some randomness
+                if (target.pos.x < 20 || target.pos.x > width() - 20) {
+                    target.direction = Math.PI - target.direction + rand(-0.5, 0.5);
                 }
-                if (target.pos.y < 0 || target.pos.y > height()) {
-                    target.direction = -target.direction;
+                if (target.pos.y < 20 || target.pos.y > height() - 20) {
+                    target.direction = -target.direction + rand(-0.5, 0.5);
                 }
             });
 
             return target;
         }
 
-        // Shooting function
+        // Enhanced shooting system
         function shoot(pos) {
             if (gameState.reloading || gameState.ammo <= 0) return;
 
+            const weapon = weapons[gameState.weapon];
             gameState.ammo--;
             
-            // Check for hits
-            const targets = get("target");
+            // Visual muzzle flash
+            add([
+                circle(20),
+                pos(pos),
+                color(255, 255, 0),
+                lifespan(0.1),
+                z(60)
+            ]);
+
+            let targets = get("target");
             let hit = false;
 
+            if (weapon.crosshair === 'spread') {
+                // Shotgun spread
+                targets = targets.filter(t => t.pos.dist(pos) < 120);
+            } else {
+                // Precise weapons
+                targets = targets.filter(t => t.hasPoint(pos));
+            }
+
             targets.forEach(target => {
-                if (target.hasPoint(pos)) {
-                    // Hit!
+                target.health--;
+                if (target.health <= 0) {
                     destroy(target);
-                    gameState.score += 100 * gameState.combo;
+                    gameState.score += weapon.damage * gameState.combo;
                     gameState.combo++;
                     gameState.targetsLeft--;
                     hit = true;
 
-                    // Explosion effect
-                    add([
-                        circle(20),
-                        pos(target.pos),
-                        color(255, 255, 0),
-                        lifespan(0.3),
-                        scale(2)
-                    ]);
+                    // Enhanced explosion
+                    for (let i = 0; i < 10; i++) {
+                        add([
+                            circle(rand(2, 8)),
+                            pos(target.pos.add(rand(-20, 20), rand(-20, 20))),
+                            color(255, rand(100, 255), 0),
+                            lifespan(rand(0.3, 0.8)),
+                            move(rand(0, 360), rand(50, 200)),
+                            z(55)
+                        ]);
+                    }
 
                     // Score popup
                     add([
-                        text(`+${100 * (gameState.combo - 1)}`, { size: 20 }),
+                        text(`+${weapon.damage * (gameState.combo - 1)}`, { size: 24 }),
                         pos(target.pos),
                         lifespan(1),
-                        move(UP, 50),
-                        color(GREEN)
+                        move(UP, 80),
+                        color(0, 255, 0),
+                        z(60)
+                    ]);
+                } else {
+                    // Damage indicator
+                    add([
+                        text("HIT!", { size: 16 }),
+                        pos(target.pos),
+                        lifespan(0.5),
+                        move(UP, 40),
+                        color(255, 255, 0),
+                        z(60)
                     ]);
                 }
             });
 
             if (!hit) {
-                gameState.combo = 1; // Reset combo on miss
+                gameState.combo = 1;
             }
 
-            // Auto reload when empty
             if (gameState.ammo === 0) {
                 reload();
             }
@@ -233,61 +492,96 @@
         function reload() {
             if (gameState.reloading) return;
             
+            const weapon = weapons[gameState.weapon];
             gameState.reloading = true;
-            wait(2, () => {
-                gameState.ammo = gameState.maxAmmo;
+            
+            wait(weapon.reload, () => {
+                gameState.ammo = weapon.ammo;
+                gameState.maxAmmo = weapon.ammo;
                 gameState.reloading = false;
                 updateUI();
             });
         }
 
-        // Update UI
+        // UI update function
         function updateUI() {
-            scoreText.text = `Score: ${gameState.score}`;
-            ammoText.text = gameState.reloading ? "RELOADING..." : `Ammo: ${gameState.ammo}/${gameState.maxAmmo}`;
-            waveText.text = `Wave: ${gameState.wave} | Targets: ${gameState.targetsLeft}`;
-            
-            // Update button colors
-            fireButton.color = gameState.ammo > 0 ? rgb(255, 0, 0, 0.7) : rgb(100, 0, 0, 0.7);
+            const ui = get("ui");
+            if (ui.length >= 4) {
+                const [scoreText, ammoText, waveText, weaponText] = ui;
+                scoreText.text = `Score: ${gameState.score}`;
+                ammoText.text = gameState.reloading ? "RELOADING..." : `Ammo: ${gameState.ammo}/${gameState.maxAmmo}`;
+                waveText.text = `Wave: ${gameState.wave} | Targets: ${gameState.targetsLeft}`;
+                weaponText.text = gameState.weapon;
+                weaponText.color = weapons[gameState.weapon].color;
+            }
         }
 
         // Start new wave
         function startWave() {
             gameState.targetsLeft = 3 + gameState.wave * 2;
             for (let i = 0; i < gameState.targetsLeft; i++) {
-                wait(i * 0.5, () => spawnTarget());
+                wait(i * 0.3, () => spawnTarget());
             }
+        }
+
+        // Initialize game
+        function initGame() {
+            createStarfield();
+            createCrosshair();
+            createResponsiveUI();
+            createMobileControls();
+            
+            add([
+                text("TAP TO START HUNTING!", { 
+                    size: Math.min(width() * 0.04, 48),
+                    align: "center" 
+                }),
+                pos(center()),
+                anchor("center"),
+                fixed(),
+                z(100),
+                "startText"
+            ]);
         }
 
         // Input handling
         onClick(() => {
             if (!gameState.gameActive) {
                 gameState.gameActive = true;
-                destroy(instructions);
+                destroyAll("startText");
                 startWave();
                 return;
             }
-            shoot(mousePos());
+            
+            if (!gameState.weaponMenuOpen) {
+                shoot(mousePos());
+            }
         });
 
         onClick("fireBtn", () => {
-            shoot(center());
+            if (gameState.gameActive && !gameState.weaponMenuOpen) {
+                shoot(center());
+            }
         });
 
         onClick("reloadBtn", () => {
             reload();
         });
 
+        onClick("weaponBtn", () => {
+            createWeaponMenu();
+        });
+
         // Game loop
         onUpdate(() => {
             if (gameState.gameActive && gameState.targetsLeft <= 0) {
-                // Wave complete
                 gameState.wave++;
                 wait(1, () => startWave());
             }
         });
 
         // Initialize
+        initGame();
         updateUI();
     </script>
 </body>
