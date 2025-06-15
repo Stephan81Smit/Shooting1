@@ -3,228 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Telescope Sniper Elite - Fun Edition</title>
-    <script src="https://kaboomjs.com/lib/0.7.2/kaboom.js"></script>
+    <title>Telescope Sniper - Working Version</title>
+    <script src="https://unpkg.com/kaboom@3000/dist/kaboom.js"></script>
     <style>
-        body, html { margin: 0; padding: 0; overflow: hidden; background: #000; }
-        canvas { display: block; }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            background: #000; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas { 
+            border: 2px solid #333;
+            max-width: 100vw;
+            max-height: 100vh;
+        }
     </style>
 </head>
 <body>
-    <div id="game"></div>
     <script>
+        // Initialize Kaboom
         kaboom({
-            width: 1024,
-            height: 768,
-            letterbox: true,
-            touchToMouse: true,
-            canvas: document.querySelector("#game"),
-            background: [10, 10, 20]
+            width: 800,
+            height: 600,
+            background: [20, 20, 40],
+            crisp: true
         });
 
-        // ASSET LOADING
-        loadSound("shot", "https://files.catbox.moe/3u5yjn.mp3");
-        loadSound("hit", "https://files.catbox.moe/4mfc9a.mp3");
-        loadSound("reloadSfx", "https://files.catbox.moe/zz7p0x.mp3");
-        loadSound("waveClear", "https://files.catbox.moe/gr7i2b.mp3");
-        loadSound("comboBreak", "https://files.catbox.moe/4wv0d0.mp3");
+        // Game state
+        let gameState = {
+            score: 0,
+            ammo: 6,
+            maxAmmo: 6,
+            reloading: false,
+            combo: 1,
+            wave: 1,
+            targetsLeft: 5,
+            gameActive: false
+        };
 
-        // --- SCENE 1: MAIN MENU ---
-        scene("menu", () => {
-            add([
-                text("Telescope Sniper", { size: 64, align: "center" }),
-                pos(center().x, height() * 0.3),
-                anchor("center")
-            ]);
+        // Create crosshair/scope
+        const crosshair = add([
+            pos(center()),
+            circle(100),
+            outline(4, RED),
+            fixed(),
+            z(100)
+        ]);
 
-            const playBtn = add([
-                rect(240, 80, { radius: 10 }),
-                pos(center()),
-                outline(4),
+        // Crosshair lines
+        add([
+            pos(center().sub(20, 0)),
+            rect(40, 2),
+            color(RED),
+            fixed(),
+            z(101)
+        ]);
+        add([
+            pos(center().sub(0, 20)),
+            rect(2, 40),
+            color(RED),
+            fixed(),
+            z(101)
+        ]);
+
+        // UI Elements
+        const scoreText = add([
+            text("Score: 0", { size: 24 }),
+            pos(20, 20),
+            fixed(),
+            z(100)
+        ]);
+
+        const ammoText = add([
+            text("Ammo: 6/6", { size: 24 }),
+            pos(width() - 20, 20),
+            anchor("topright"),
+            fixed(),
+            z(100)
+        ]);
+
+        const waveText = add([
+            text("Wave: 1", { size: 24 }),
+            pos(center().x, 20),
+            anchor("top"),
+            fixed(),
+            z(100)
+        ]);
+
+        // Fire button for mobile
+        const fireButton = add([
+            pos(width() - 80, height() - 80),
+            circle(50),
+            color(255, 0, 0, 0.7),
+            outline(3, WHITE),
+            area(),
+            fixed(),
+            z(200),
+            "fireBtn"
+        ]);
+
+        add([
+            text("FIRE", { size: 16 }),
+            pos(width() - 80, height() - 80),
+            anchor("center"),
+            fixed(),
+            z(201)
+        ]);
+
+        // Reload button
+        const reloadButton = add([
+            pos(width() - 200, height() - 80),
+            rect(100, 60),
+            color(0, 0, 255, 0.7),
+            outline(3, WHITE),
+            area(),
+            fixed(),
+            z(200),
+            "reloadBtn"
+        ]);
+
+        add([
+            text("RELOAD", { size: 14 }),
+            pos(width() - 150, height() - 80),
+            anchor("center"),
+            fixed(),
+            z(201)
+        ]);
+
+        // Instructions
+        const instructions = add([
+            text("Click to aim and shoot!\nUse FIRE button on mobile", { 
+                size: 20, 
+                align: "center" 
+            }),
+            pos(center().x, center().y + 150),
+            anchor("center"),
+            fixed(),
+            z(100)
+        ]);
+
+        // Target spawning
+        function spawnTarget() {
+            const target = add([
+                rect(40, 40),
+                pos(rand(100, width() - 100), rand(100, height() - 100)),
+                color(rand(100, 255), rand(50, 150), rand(50, 150)),
                 area(),
-                anchor("center"),
-                color(0, 1, 0)
-            ]);
-            add([ text("Play", { size: 48 }), pos(center()), anchor("center") ]);
-
-            playBtn.onClick(() => go("tutorial"));
-        });
-
-        // --- SCENE 2: TUTORIAL ---
-        scene("tutorial", () => {
-            add([
-                text("TUTORIAL", { size: 48 }),
-                pos(center().x, height() * 0.2),
-                anchor("center")
-            ]);
-            add([
-                text("Tilt Your Phone to Aim.\nTap FIRE to Shoot.", { size: 32, align: "center", width: width() * 0.8 }),
-                pos(center().x, height() * 0.4),
-                anchor("center")
-            ]);
-            const startBtn = add([
-                rect(300, 80, { radius: 10 }),
-                pos(center().x, height() * 0.7),
-                outline(4), area(), anchor("center"), color(0, 1, 0)
-            ]);
-            add([ text("Calibrate & Start", { size: 32 }), pos(center().x, height() * 0.7), anchor("center") ]);
-            
-            startBtn.onClick(() => go("game"));
-        });
-
-        // --- SCENE 3: GAME ---
-        scene("game", () => {
-            // GAME STATE
-            const gameState = {
-                score: 0,
-                ammo: 6,
-                reloading: false,
-                wave: 0,
-                combo: 1,
-                highestCombo: 1,
-                waveTimer: 0,
-                targetsRemaining: 0,
-            };
-
-            // GYRO AIMING
-            const gyro = { sensitivity: 0.1, x: 0, y: 0 };
-            function handleMotion(event) {
-                const rot = event.rotationRate;
-                gyro.x += rot.beta * gyro.sensitivity;
-                gyro.y += rot.alpha * gyro.sensitivity;
-                const cam = camPos();
-                camPos(clamp(cam.x + gyro.y, 0, width()), clamp(cam.y + gyro.x, 0, height()));
-            }
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission().then(state => {
-                    if (state === 'granted') window.addEventListener('devicemotion', handleMotion);
-                });
-            } else {
-                window.addEventListener('devicemotion', handleMotion);
-            }
-
-            // UI ELEMENTS
-            const scoreUI = add([ pos(20, 20), text("Score: 0", { size: 28 }), fixed(), anchor('top-left'), z(100) ]);
-            const ammoUI = add([ pos(width() - 20, 20), text("Ammo: 6", { size: 28 }), fixed(), anchor('top-right'), z(100) ]);
-            const waveUI = add([ pos(center().x, 20), text("Wave: 1", { size: 32 }), fixed(), anchor('top'), z(100) ]);
-            const comboUI = add([ pos(20, height() - 20), text("", { size: 32, font: "sans-serif" }), fixed(), anchor('bot-left'), z(100) ]);
-            const timerUI = add([ pos(width() / 2, height() - 20), text("Time: 30", { size: 28 }), fixed(), anchor('bot'), z(100) ]);
-
-            // NOTIFICATION SYSTEM
-            function showNotification(txt, p, col = [255, 255, 255]) {
-                add([
-                    text(txt, { size: 24 }),
-                    pos(p),
-                    lifespan(1, { fade: 0.5 }),
-                    move(UP, 60),
-                    color(...col),
-                    z(200)
-                ]);
-            }
-
-            // WAVE SYSTEM
-            function startWave(waveNum) {
-                gameState.wave = waveNum;
-                gameState.targetsRemaining = 2 + waveNum * 2; // Increase targets per wave
-                gameState.waveTimer = 20 + waveNum * 5; // More time for later waves
-                waveUI.text = `Wave: ${waveNum}`;
-                showNotification(`WAVE ${waveNum}`, center(), [0, 255, 0]);
-                for (let i = 0; i < gameState.targetsRemaining; i++) {
-                    wait(rand(0.1, 1.5), spawnTarget);
+                "target",
+                {
+                    speed: rand(50, 150),
+                    direction: rand(0, 360)
                 }
-            }
+            ]);
 
-            function spawnTarget() {
-                add([
-                    rect(40, 40), pos(rand(0, width()), rand(0, height())), color(1, 0.2, 0.2), area(), "target",
-                    { speed: rand(100 + gameState.wave * 10, 200 + gameState.wave * 20) },
-                    lifespan(10) // Targets despawn if not shot
-                ]);
-            }
+            target.onUpdate(() => {
+                target.move(
+                    Math.cos(target.direction) * target.speed,
+                    Math.sin(target.direction) * target.speed
+                );
 
-            // CONTROLS
-            const fireButton = add([ pos(width() - 80, height() - 80), circle(60), color(0, 0, 0, 0.5), outline(4, [255, 255, 255]), area(), fixed(), anchor('bot-right'), z(200) ]);
-            fireButton.onClick(() => {
-                if (gameState.reloading || gameState.ammo <= 0) return;
-                
-                gameState.ammo--;
-                play("shot");
-                const shotPos = camPos();
-                const hit = get("target").find(t => t.hasPoint(shotPos));
+                // Bounce off walls
+                if (target.pos.x < 0 || target.pos.x > width()) {
+                    target.direction = Math.PI - target.direction;
+                }
+                if (target.pos.y < 0 || target.pos.y > height()) {
+                    target.direction = -target.direction;
+                }
+            });
 
-                if (hit) {
-                    play("hit");
-                    destroy(hit);
-                    gameState.targetsRemaining--;
-                    const points = 100 * gameState.combo;
-                    gameState.score += points;
+            return target;
+        }
+
+        // Shooting function
+        function shoot(pos) {
+            if (gameState.reloading || gameState.ammo <= 0) return;
+
+            gameState.ammo--;
+            
+            // Check for hits
+            const targets = get("target");
+            let hit = false;
+
+            targets.forEach(target => {
+                if (target.hasPoint(pos)) {
+                    // Hit!
+                    destroy(target);
+                    gameState.score += 100 * gameState.combo;
                     gameState.combo++;
-                    if(gameState.combo > gameState.highestCombo) gameState.highestCombo = gameState.combo;
+                    gameState.targetsLeft--;
+                    hit = true;
 
-                    showNotification(`+${points}`, hit.pos);
-                    showNotification(`x${gameState.combo} COMBO!`, hit.pos.add(0, 30), [255, 255, 0]);
-                } else { // Miss
-                    if (gameState.combo > 1) {
-                        play("comboBreak");
-                        showNotification("COMBO LOST", camPos(), [255, 0, 0]);
-                    }
-                    gameState.combo = 1;
+                    // Explosion effect
+                    add([
+                        circle(20),
+                        pos(target.pos),
+                        color(255, 255, 0),
+                        lifespan(0.3),
+                        scale(2)
+                    ]);
+
+                    // Score popup
+                    add([
+                        text(`+${100 * (gameState.combo - 1)}`, { size: 20 }),
+                        pos(target.pos),
+                        lifespan(1),
+                        move(UP, 50),
+                        color(GREEN)
+                    ]);
                 }
-
-                if (gameState.ammo === 0) reload();
             });
 
-            function reload() {
-                if (gameState.reloading) return;
-                play("reloadSfx");
-                gameState.reloading = true;
-                wait(2, () => {
-                    gameState.ammo = 6;
-                    gameState.reloading = false;
-                });
+            if (!hit) {
+                gameState.combo = 1; // Reset combo on miss
             }
 
-            // GAME LOOP
-            onUpdate(() => {
-                gameState.waveTimer -= dt(); // dt() is delta time
-                // Update UI
-                scoreUI.text = `Score: ${gameState.score}`;
-                ammoUI.text = gameState.reloading ? `RELOADING` : `Ammo: ${gameState.ammo}`;
-                fireButton.color = gameState.ammo > 0 ? rgb(0,0,0,0.5) : rgb(1,0,0,0.5);
-                comboUI.text = gameState.combo > 1 ? `COMBO x${gameState.combo}` : "";
-                comboUI.color = gameState.combo > 5 ? rgb(1, 0.5, 0) : rgb(1,1,1);
-                timerUI.text = `Time: ${Math.max(0, Math.round(gameState.waveTimer))}`;
-                timerUI.color = gameState.waveTimer < 5 ? rgb(1,0,0) : rgb(1,1,1);
+            // Auto reload when empty
+            if (gameState.ammo === 0) {
+                reload();
+            }
 
-                // Game Logic Checks
-                if (gameState.targetsRemaining <= 0) {
-                    play("waveClear");
-                    gameState.score += Math.round(gameState.waveTimer) * 50; // Time bonus
-                    showNotification(`TIME BONUS +${Math.round(gameState.waveTimer) * 50}`, center());
-                    startWave(gameState.wave + 1);
-                }
-                if (gameState.waveTimer <= 0) {
-                    go("gameOver", { score: gameState.score, wave: gameState.wave, combo: gameState.highestCombo });
-                }
-            });
+            updateUI();
+        }
 
-            startWave(1); // Let's begin!
-        });
-
-        // --- SCENE 4: GAME OVER ---
-        scene("gameOver", ({ score, wave, combo }) => {
-            add([ text("GAME OVER", { size: 64 }), pos(center().x, height() * 0.2), anchor("center"), color(1, 0, 0) ]);
-            add([ text(`Final Score: ${score}`, { size: 40 }), pos(center().x, height() * 0.4), anchor("center") ]);
-            add([ text(`Waves Cleared: ${wave - 1}`, { size: 32 }), pos(center().x, height() * 0.5), anchor("center") ]);
-            add([ text(`Highest Combo: x${combo}`, { size: 32 }), pos(center().x, height() * 0.6), anchor("center") ]);
+        // Reload function
+        function reload() {
+            if (gameState.reloading) return;
             
-            const retryBtn = add([ rect(240, 80, { radius: 10 }), pos(center().x, height() * 0.8), outline(4), area(), anchor("center"), color(0,1,0) ]);
-            add([ text("Play Again", { size: 32 }), pos(center().x, height() * 0.8), anchor("center") ]);
+            gameState.reloading = true;
+            wait(2, () => {
+                gameState.ammo = gameState.maxAmmo;
+                gameState.reloading = false;
+                updateUI();
+            });
+        }
 
-            retryBtn.onClick(() => go("game"));
+        // Update UI
+        function updateUI() {
+            scoreText.text = `Score: ${gameState.score}`;
+            ammoText.text = gameState.reloading ? "RELOADING..." : `Ammo: ${gameState.ammo}/${gameState.maxAmmo}`;
+            waveText.text = `Wave: ${gameState.wave} | Targets: ${gameState.targetsLeft}`;
+            
+            // Update button colors
+            fireButton.color = gameState.ammo > 0 ? rgb(255, 0, 0, 0.7) : rgb(100, 0, 0, 0.7);
+        }
+
+        // Start new wave
+        function startWave() {
+            gameState.targetsLeft = 3 + gameState.wave * 2;
+            for (let i = 0; i < gameState.targetsLeft; i++) {
+                wait(i * 0.5, () => spawnTarget());
+            }
+        }
+
+        // Input handling
+        onClick(() => {
+            if (!gameState.gameActive) {
+                gameState.gameActive = true;
+                destroy(instructions);
+                startWave();
+                return;
+            }
+            shoot(mousePos());
         });
 
-        go("menu");
+        onClick("fireBtn", () => {
+            shoot(center());
+        });
+
+        onClick("reloadBtn", () => {
+            reload();
+        });
+
+        // Game loop
+        onUpdate(() => {
+            if (gameState.gameActive && gameState.targetsLeft <= 0) {
+                // Wave complete
+                gameState.wave++;
+                wait(1, () => startWave());
+            }
+        });
+
+        // Initialize
+        updateUI();
     </script>
 </body>
 </html>
