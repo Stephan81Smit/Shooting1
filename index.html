@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Starlight Hunter - Professional Edition</title>
+    <title>Starlight Hunter - The Working Professional Edition</title>
     <script src="https://unpkg.com/kaboom@3000/dist/kaboom.js"></script>
     <style>
         body, html { margin: 0; padding: 0; overflow: hidden; background: #000; }
@@ -12,187 +12,166 @@
 </head>
 <body>
     <script>
+        // Initialize Kaboom.js
         kaboom({
             width: 1280,
             height: 720,
-            letterbox: true,
-            background: [5, 5, 15],
+            letterbox: true, // Ensures the game scales correctly on all screen sizes
+            background: [5, 5, 15], // A very dark blue for the void of space
         });
-
-        // --- AUDIO ASSETS (Embedded as Base64 to guarantee they work) ---
-        // Using short, royalty-free sounds to ensure no loading errors.
-        loadSound("shot", "data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQBAADp/1v/eP5u/Wj6cvpE+CH2nPGo6/7qgeXP52blN+Gg3FjYptoQ1s7Pw9CIzbjIpcbuxaTDmMAnwZfCl8O3xAfFvMbKyLzM/9E81WrXpN5p5ezr0fPa+GX84P+s");
-        loadSound("impact", "data:audio/wav;base64,UklGRkIAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YfwAAAD8/vr++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f7g==");
 
         // --- GAME CONFIGURATION ---
         const CONFIG = {
-            WORLD_SIZE: 5000,
-            MIN_ZOOM: 0.5,
-            MAX_ZOOM: 4.0,
-            SWAY_AMOUNT: 4,
-            SWAY_SPEED: 1.5,
-            INITIAL_TARGETS: 15,
+            WORLD_SIZE: 5000,       // A large world to explore
+            INITIAL_TARGETS: 15,    // How many targets to hunt
+            SWAY_AMOUNT: 4,         // How much the scope "breathes"
+            SWAY_SPEED: 1.5,        // How fast the scope sways
+            INITIAL_AMMO: 8,
         };
 
-        // --- SCENE: GAME ---
+        // --- THE MAIN GAME SCENE ---
         scene("game", () => {
+            // Game State Variables
             let score = 0;
-            let ammo = 8;
+            let ammo = CONFIG.INITIAL_AMMO;
             let reloading = false;
+            let isSteady = false; // Is the player holding right-click to aim?
             let currentZoom = 1;
-            let isSteady = false;
 
-            // --- IMMERSIVE ENVIRONMENT ---
-            // Create a multi-layered parallax background for a sense of depth
+            // --- PROCEDURAL ENVIRONMENT ---
+            // Create a multi-layered parallax background for a sense of depth and motion.
+            // This entire environment is generated with code, requiring no images.
             for (let i = 1; i <= 3; i++) {
                 add([
-                    rect(width(), height()),
-                    fixed(),
-                    z(-10 - i),
-                    opacity(0.3),
+                    // This is a custom component for drawing the star layers
                     {
-                        // Each layer has its own starfield
-                        draw() {
-                            for (const star of this.stars) {
-                                drawCircle({ pos: star.pos, radius: star.radius, color: WHITE });
-                            }
-                        },
-                        // Populate this layer with stars
-                        stars: Array.from({ length: 50 / i }, () => ({
-                            pos: vec2(rand(0, width()), rand(0, height())),
-                            radius: rand(0.5, 2 - i * 0.5)
+                        // Store star data for this layer
+                        stars: Array.from({ length: 70 / i }, () => ({
+                            p: vec2(rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE), rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE)),
+                            s: rand(0.5, 2 - i * 0.5) // Closer stars are bigger
                         })),
-                        // Move each layer at a different speed based on camera movement
-                        update() {
-                            const camMove = camPos().sub(this.lastCamPos || camPos());
+                        // The draw function is called every frame
+                        draw() {
                             this.stars.forEach(star => {
-                                star.pos = star.pos.sub(camMove.scale(i * 0.1));
-                                if (star.pos.x < 0) star.pos.x += width();
-                                if (star.pos.x > width()) star.pos.x -= width();
-                                if (star.pos.y < 0) star.pos.y += height();
-                                if (star.pos.y > height()) star.pos.y -= height();
+                                // Only draw stars that are visible in the camera's view
+                                if (isInsideView(star.p)) {
+                                    drawCircle({ pos: star.p, radius: star.s, color: WHITE });
+                                }
                             });
-                            this.lastCamPos = camPos();
                         }
-                    }
+                    },
+                    z(-10 - i) // Send deep into the background
                 ]);
             }
-            // Add static "asteroid fields" to the world to make it feel less empty
+            // Add static "asteroid fields" to make the world feel less empty
             for (let i = 0; i < 20; i++) {
                 const fieldCenter = vec2(rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE), rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE));
                 for (let j = 0; j < 30; j++) {
-                    add([
-                        circle(rand(5, 50)),
-                        pos(fieldCenter.add(rand(-200, 200), rand(-200, 200))),
-                        color(100, 100, 120),
-                        opacity(0.2),
-                        z(-5)
-                    ]);
+                    add([ circle(rand(5, 50)), pos(fieldCenter.add(rand(-300, 300), rand(-300, 300))), color(100, 100, 120), opacity(0.2), z(-5) ]);
                 }
             }
             
             // --- TELESCOPE VIEW & UI ---
-            // This is the custom component that draws the scope vignette
+            // This custom component draws the scope vignette (the black mask)
             add([
-                fixed(),
-                z(100),
+                fixed(), // Stays on screen
+                z(100),   // Appears on top of everything else
                 {
                     draw() {
                         const scopeRadius = isSteady ? width() / 2.8 : width() / 3;
-                        drawRect({ width: width(), height: height(), color: BLACK }); // Full black background
-                        // Clear a circle in the center to create the "lens"
+                        // Draw a black overlay covering the entire screen
+                        drawRect({ width: width(), height: height(), color: BLACK });
+                        // Then, "cut out" a circle in the middle by drawing the background color over it
                         drawCircle({ pos: center(), radius: scopeRadius, color: background });
-                        // Draw the scope's border
+                        // Finally, draw the scope's border
                         drawCircle({ pos: center(), radius: scopeRadius, outline: { color: WHITE, width: 3 }, fill: false });
                     },
                 },
             ]);
 
-            // Draw a detailed crosshair that reacts to steadying
-            function drawCrosshair() {
-                const centerPos = center();
-                const lineLength = isSteady ? 15 : 25;
-                const gap = isSteady ? 2 : 4;
-                drawLine({ p1: centerPos.sub(lineLength, 0), p2: centerPos.sub(gap, 0), color: RED, width: 1 });
-                drawLine({ p1: centerPos.add(lineLength, 0), p2: centerPos.add(gap, 0), color: RED, width: 1 });
-                drawLine({ p1: centerPos.sub(0, lineLength), p2: centerPos.sub(0, gap), color: RED, width: 1 });
-                drawLine({ p1: centerPos.add(0, lineLength), p2: centerPos.add(0, gap), color: RED, width: 1 });
-            }
-            add([ fixed(), z(101), { draw: drawCrosshair } ]);
+            // This component draws the crosshair in the center of the screen
+            add([
+                fixed(),
+                z(101),
+                {
+                    draw() {
+                        const centerPos = center();
+                        const lineLength = isSteady ? 15 : 25; // Crosshair tightens when aiming
+                        const gap = isSteady ? 2 : 4;
+                        drawLine({ p1: centerPos.sub(lineLength, 0), p2: centerPos.sub(gap, 0), color: RED, width: 2 });
+                        drawLine({ p1: centerPos.add(lineLength, 0), p2: centerPos.add(gap, 0), color: RED, width: 2 });
+                        drawLine({ p1: centerPos.sub(0, lineLength), p2: centerPos.sub(0, gap), color: RED, width: 2 });
+                        drawLine({ p1: centerPos.add(0, lineLength), p2: centerPos.add(0, gap), color: RED, width: 2 });
+                    }
+                }
+            ]);
 
             // HUD Elements
             const scoreUI = add([ text("Score: 0"), pos(20, 20), fixed(), z(110) ]);
-            const ammoUI = add([ text("Ammo: 8"), pos(width() - 20, 20), anchor("topright"), fixed(), z(110) ]);
+            const ammoUI = add([ text(`Ammo: ${ammo}`), pos(width() - 20, 20), anchor("topright"), fixed(), z(110) ]);
+            const helpUI = add([ text("Right-Click to Aim, Left-Click to Fire"), pos(center().x, height() - 20), anchor("bot"), fixed(), z(110) ]);
 
             // --- REALISTIC CAMERA & CONTROLS ---
             const cam = { sway: vec2(0), recoil: vec2(0) };
             onUpdate(() => {
-                const swayFactor = isSteady ? 0.2 : 1;
+                const swayFactor = isSteady ? 0.2 : 1; // Reduce sway when aiming
                 cam.sway.x = Math.sin(time() * CONFIG.SWAY_SPEED) * CONFIG.SWAY_AMOUNT * swayFactor;
                 cam.sway.y = Math.cos(time() * CONFIG.SWAY_SPEED * 1.2) * CONFIG.SWAY_AMOUNT * swayFactor;
-                cam.recoil = cam.recoil.lerp(vec2(0), dt() * 8);
+                cam.recoil = cam.recoil.lerp(vec2(0), dt() * 8); // Smoothly recover from recoil
+                
+                // Camera smoothly follows the mouse cursor
                 const targetCamPos = camPos().lerp(mousePos(), dt() * 2);
+                
+                // Apply all camera effects and clamp to world bounds
                 camPos(
                     clamp(targetCamPos.x + cam.sway.x + cam.recoil.x, -CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE),
                     clamp(targetCamPos.y + cam.sway.y + cam.recoil.y, -CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE)
                 );
-            });
-            
-            // Hold Right-Click to steady aim and zoom
-            onMouseDown("right", () => { isSteady = true; });
-            onMouseRelease("right", () => { isSteady = false; });
-            // Left-Click to fire
-            onMousePress("left", () => shoot());
 
-            onUpdate(() => {
+                // Smoothly zoom when aiming
                 const targetZoom = isSteady ? 1.5 : 1.0;
                 currentZoom = lerp(currentZoom, targetZoom, dt() * 5);
                 camScale(currentZoom);
             });
+            
+            // Professional control scheme
+            onMouseDown("right", () => { isSteady = true; });
+            onMouseRelease("right", () => { isSteady = false; });
+            onMousePress("left", () => shoot());
 
             // --- INTELLIGENT TARGETS & GAMEPLAY ---
             function spawnTarget() {
-                // Spawn targets around the world, not just near the player
                 const spawnPos = vec2(rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE), rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE));
-                
-                const target = add([
-                    // A more interesting shape than a circle
-                    polygon([vec2(0, -20), vec2(-15, 15), vec2(15, 15)]),
-                    pos(spawnPos),
-                    color(200, 200, 255),
-                    area(),
-                    outline(2, WHITE),
-                    "target",
-                    // Custom component for AI behavior
+                add([
+                    polygon([vec2(0, -20), vec2(-15, 15), vec2(15, 15)]), // A triangular shape
+                    pos(spawnPos), color(200, 200, 255), area(), outline(2, WHITE), "target",
+                    // This is the custom component for target AI
                     {
                         speed: rand(50, 150),
                         dir: rand(0, 360),
                         behavior: choose(["drifting", "patrolling", "skittish"]),
                         patrolPoint: pos(spawnPos).add(rand(-300, 300), rand(-300, 300)),
                         update() {
-                            // Behavior logic
+                            // Target AI Logic
                             if (this.behavior === "skittish") {
-                                const distToCrosshair = this.pos.dist(camPos());
-                                if (distToCrosshair < 150 / currentZoom) {
-                                    // Flee from the crosshair!
-                                    this.dir = this.pos.angle(camPos()) + 180;
+                                if (this.pos.dist(camPos()) < 150 / currentZoom) {
+                                    this.dir = this.pos.angle(camPos()) + 180; // Flee!
                                     this.speed = 400;
-                                } else {
-                                    this.speed = 100;
-                                }
+                                } else { this.speed = 100; }
                             } else if (this.behavior === "patrolling") {
                                 if (this.pos.dist(this.patrolPoint) < 20) {
                                     this.patrolPoint = pos(this.pos).add(rand(-300, 300), rand(-300, 300));
                                 }
                                 this.dir = this.pos.angle(this.patrolPoint);
                             }
-                            
                             this.move(Vec2.fromAngle(this.dir).scale(this.speed));
 
-                            // Keep target within world bounds
-                            if (this.pos.x > CONFIG.WORLD_SIZE || this.pos.x < -CONFIG.WORLD_SIZE || this.pos.y > CONFIG.WORLD_SIZE || this.pos.y < -CONFIG.WORLD_SIZE) {
-                                destroy(this);
-                                spawnTarget();
+                            // If target wanders out of the world, respawn it elsewhere
+                            if (this.pos.x > CONFIG.WORLD_SIZE || this.pos.x < -CONFIG.WORLD_SIZE) {
+                                this.pos.x = -this.pos.x;
+                            }
+                            if (this.pos.y > CONFIG.WORLD_SIZE || this.pos.y < -CONFIG.WORLD_SIZE) {
+                                this.pos.y = -this.pos.y;
                             }
                         }
                     }
@@ -200,7 +179,6 @@
             }
             
             function shatter(p, col) {
-                play("impact", { volume: 0.8 });
                 for (let i = 0; i < 12; i++) {
                     add([
                         rect(rand(4, 10), rand(4, 10)), pos(p), color(col), rotate(rand(0, 360)),
@@ -228,10 +206,8 @@
 
                 if (closestTarget) {
                     const screenPos = toScreen(closestTarget.pos);
-                    const scopeRadius = (isSteady ? width() / 2.8 : width() / 3) - 30; // Margin
-                    const distFromCenter = screenPos.dist(center());
-
-                    if (distFromCenter > scopeRadius) {
+                    const scopeRadius = (isSteady ? width() / 2.8 : width() / 3) - 30;
+                    if (screenPos.dist(center()) > scopeRadius) {
                         indicator.opacity = lerp(indicator.opacity, 1, dt() * 5);
                         const angle = center().angle(screenPos);
                         indicator.pos = center().add(Vec2.fromAngle(angle).scale(scopeRadius));
@@ -247,8 +223,7 @@
             function shoot() {
                 if (reloading || ammo <= 0) return;
                 ammo--;
-                play("shot", { volume: 0.7 });
-                shake(4);
+                shake(isSteady ? 2 : 4); // Less shake when aimed
                 cam.recoil = vec2(0, -15);
                 
                 const shotPos = camPos();
@@ -263,7 +238,7 @@
                 
                 if (ammo <= 0) {
                     reloading = true;
-                    wait(2, () => { ammo = 8; reloading = false; });
+                    wait(2, () => { ammo = CONFIG.INITIAL_AMMO; reloading = false; });
                 }
             }
 
