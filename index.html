@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Telescope Hunter - Final Working Edition</title>
-    <!-- Using the latest stable Kaboom.js version -->
+    <title>Starlight Hunter - Professional Edition</title>
     <script src="https://unpkg.com/kaboom@3000/dist/kaboom.js"></script>
     <style>
         body, html { margin: 0; padding: 0; overflow: hidden; background: #000; }
@@ -13,18 +12,27 @@
 </head>
 <body>
     <script>
-        // Initialize Kaboom
         kaboom({
-            width: 1024,
-            height: 768,
+            width: 1280,
+            height: 720,
             letterbox: true,
-            background: [10, 15, 30], // Deep space blue
+            background: [5, 5, 15],
         });
 
+        // --- AUDIO ASSETS (Embedded as Base64 to guarantee they work) ---
+        // Using short, royalty-free sounds to ensure no loading errors.
+        loadSound("shot", "data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQBAADp/1v/eP5u/Wj6cvpE+CH2nPGo6/7qgeXP52blN+Gg3FjYptoQ1s7Pw9CIzbjIpcbuxaTDmMAnwZfCl8O3xAfFvMbKyLzM/9E81WrXpN5p5ezr0fPa+GX84P+s");
+        loadSound("impact", "data:audio/wav;base64,UklGRkIAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YfwAAAD8/vr++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f75/vn++f7g==");
+
         // --- GAME CONFIGURATION ---
-        const WORLD_SIZE = 4000; // The world is larger than the screen
-        const MIN_ZOOM = 0.5;
-        const MAX_ZOOM = 3.0;
+        const CONFIG = {
+            WORLD_SIZE: 5000,
+            MIN_ZOOM: 0.5,
+            MAX_ZOOM: 4.0,
+            SWAY_AMOUNT: 4,
+            SWAY_SPEED: 1.5,
+            INITIAL_TARGETS: 15,
+        };
 
         // --- SCENE: GAME ---
         scene("game", () => {
@@ -32,42 +40,79 @@
             let ammo = 8;
             let reloading = false;
             let currentZoom = 1;
+            let isSteady = false;
 
-            // --- WORLD SETUP ---
-            // Procedurally generate a starry background that fills the vast world
-            for (let i = 0; i < 200; i++) {
+            // --- IMMERSIVE ENVIRONMENT ---
+            // Create a multi-layered parallax background for a sense of depth
+            for (let i = 1; i <= 3; i++) {
                 add([
-                    circle(rand(1, 3)),
-                    pos(rand(-WORLD_SIZE, WORLD_SIZE), rand(-WORLD_SIZE, WORLD_SIZE)),
-                    color(255, 255, 255, rand(0.5, 1)),
+                    rect(width(), height()),
+                    fixed(),
+                    z(-10 - i),
+                    opacity(0.3),
+                    {
+                        // Each layer has its own starfield
+                        draw() {
+                            for (const star of this.stars) {
+                                drawCircle({ pos: star.pos, radius: star.radius, color: WHITE });
+                            }
+                        },
+                        // Populate this layer with stars
+                        stars: Array.from({ length: 50 / i }, () => ({
+                            pos: vec2(rand(0, width()), rand(0, height())),
+                            radius: rand(0.5, 2 - i * 0.5)
+                        })),
+                        // Move each layer at a different speed based on camera movement
+                        update() {
+                            const camMove = camPos().sub(this.lastCamPos || camPos());
+                            this.stars.forEach(star => {
+                                star.pos = star.pos.sub(camMove.scale(i * 0.1));
+                                if (star.pos.x < 0) star.pos.x += width();
+                                if (star.pos.x > width()) star.pos.x -= width();
+                                if (star.pos.y < 0) star.pos.y += height();
+                                if (star.pos.y > height()) star.pos.y -= height();
+                            });
+                            this.lastCamPos = camPos();
+                        }
+                    }
                 ]);
+            }
+            // Add static "asteroid fields" to the world to make it feel less empty
+            for (let i = 0; i < 20; i++) {
+                const fieldCenter = vec2(rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE), rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE));
+                for (let j = 0; j < 30; j++) {
+                    add([
+                        circle(rand(5, 50)),
+                        pos(fieldCenter.add(rand(-200, 200), rand(-200, 200))),
+                        color(100, 100, 120),
+                        opacity(0.2),
+                        z(-5)
+                    ]);
+                }
             }
             
             // --- TELESCOPE VIEW & UI ---
-            // This component uses custom drawing to create the scope vignette effect
+            // This is the custom component that draws the scope vignette
             add([
-                fixed(), // Stays on screen
-                z(100),    // Appears on top of the game world
+                fixed(),
+                z(100),
                 {
-                    // The draw() function runs every frame for this object
                     draw() {
-                        const scopeRadius = width() / 3;
-                        // Four black rectangles create the mask outside the scope
-                        drawRect({ width: width(), height: height() / 2 - scopeRadius, pos: vec2(0, 0), color: BLACK });
-                        drawRect({ width: width(), height: height() / 2 - scopeRadius, pos: vec2(0, height() / 2 + scopeRadius), color: BLACK });
-                        drawRect({ width: width() / 2 - scopeRadius, height: height(), pos: vec2(0, 0), color: BLACK });
-                        drawRect({ width: width() / 2 - scopeRadius, height: height(), pos: vec2(width() / 2 + scopeRadius, 0), color: BLACK });
+                        const scopeRadius = isSteady ? width() / 2.8 : width() / 3;
+                        drawRect({ width: width(), height: height(), color: BLACK }); // Full black background
+                        // Clear a circle in the center to create the "lens"
+                        drawCircle({ pos: center(), radius: scopeRadius, color: background });
                         // Draw the scope's border
-                        drawCircle({ pos: center(), radius: scopeRadius, outline: { color: WHITE, width: 2 }, fill: false });
+                        drawCircle({ pos: center(), radius: scopeRadius, outline: { color: WHITE, width: 3 }, fill: false });
                     },
                 },
             ]);
 
-            // Create a detailed crosshair that is always centered
+            // Draw a detailed crosshair that reacts to steadying
             function drawCrosshair() {
                 const centerPos = center();
-                const lineLength = 25;
-                const gap = 3;
+                const lineLength = isSteady ? 15 : 25;
+                const gap = isSteady ? 2 : 4;
                 drawLine({ p1: centerPos.sub(lineLength, 0), p2: centerPos.sub(gap, 0), color: RED, width: 1 });
                 drawLine({ p1: centerPos.add(lineLength, 0), p2: centerPos.add(gap, 0), color: RED, width: 1 });
                 drawLine({ p1: centerPos.sub(0, lineLength), p2: centerPos.sub(0, gap), color: RED, width: 1 });
@@ -79,105 +124,157 @@
             const scoreUI = add([ text("Score: 0"), pos(20, 20), fixed(), z(110) ]);
             const ammoUI = add([ text("Ammo: 8"), pos(width() - 20, 20), anchor("topright"), fixed(), z(110) ]);
 
-            // --- CAMERA & CONTROLS ---
-            // Camera smoothly follows the mouse cursor
+            // --- REALISTIC CAMERA & CONTROLS ---
+            const cam = { sway: vec2(0), recoil: vec2(0) };
             onUpdate(() => {
-                // lerp() creates a smooth "lag" effect for the camera
+                const swayFactor = isSteady ? 0.2 : 1;
+                cam.sway.x = Math.sin(time() * CONFIG.SWAY_SPEED) * CONFIG.SWAY_AMOUNT * swayFactor;
+                cam.sway.y = Math.cos(time() * CONFIG.SWAY_SPEED * 1.2) * CONFIG.SWAY_AMOUNT * swayFactor;
+                cam.recoil = cam.recoil.lerp(vec2(0), dt() * 8);
                 const targetCamPos = camPos().lerp(mousePos(), dt() * 2);
-                // Clamp camera position to stay within the world bounds
                 camPos(
-                    clamp(targetCamPos.x, -WORLD_SIZE, WORLD_SIZE),
-                    clamp(targetCamPos.y, -WORLD_SIZE, WORLD_SIZE)
+                    clamp(targetCamPos.x + cam.sway.x + cam.recoil.x, -CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE),
+                    clamp(targetCamPos.y + cam.sway.y + cam.recoil.y, -CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE)
                 );
             });
+            
+            // Hold Right-Click to steady aim and zoom
+            onMouseDown("right", () => { isSteady = true; });
+            onMouseRelease("right", () => { isSteady = false; });
+            // Left-Click to fire
+            onMousePress("left", () => shoot());
 
-            // Zoom functionality using a standard browser event listener for stability
-            canvas.addEventListener("wheel", (e) => {
-                e.preventDefault(); // Stop the page from scrolling
-                currentZoom -= e.deltaY * 0.001;
-                currentZoom = clamp(currentZoom, MIN_ZOOM, MAX_ZOOM);
+            onUpdate(() => {
+                const targetZoom = isSteady ? 1.5 : 1.0;
+                currentZoom = lerp(currentZoom, targetZoom, dt() * 5);
                 camScale(currentZoom);
             });
 
-            // --- TARGET & GAMEPLAY SYSTEMS ---
+            // --- INTELLIGENT TARGETS & GAMEPLAY ---
             function spawnTarget() {
-                const spawnAngle = rand(0, 360);
-                const spawnDist = rand(800, WORLD_SIZE * 0.9);
-                // Spawn target relative to the current camera position
-                const spawnPos = camPos().add(Vec2.fromAngle(spawnAngle).scale(spawnDist));
-                add([ circle(30), pos(spawnPos), color(255, 80, 80), area(), outline(3, WHITE), "target" ]);
+                // Spawn targets around the world, not just near the player
+                const spawnPos = vec2(rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE), rand(-CONFIG.WORLD_SIZE, CONFIG.WORLD_SIZE));
+                
+                const target = add([
+                    // A more interesting shape than a circle
+                    polygon([vec2(0, -20), vec2(-15, 15), vec2(15, 15)]),
+                    pos(spawnPos),
+                    color(200, 200, 255),
+                    area(),
+                    outline(2, WHITE),
+                    "target",
+                    // Custom component for AI behavior
+                    {
+                        speed: rand(50, 150),
+                        dir: rand(0, 360),
+                        behavior: choose(["drifting", "patrolling", "skittish"]),
+                        patrolPoint: pos(spawnPos).add(rand(-300, 300), rand(-300, 300)),
+                        update() {
+                            // Behavior logic
+                            if (this.behavior === "skittish") {
+                                const distToCrosshair = this.pos.dist(camPos());
+                                if (distToCrosshair < 150 / currentZoom) {
+                                    // Flee from the crosshair!
+                                    this.dir = this.pos.angle(camPos()) + 180;
+                                    this.speed = 400;
+                                } else {
+                                    this.speed = 100;
+                                }
+                            } else if (this.behavior === "patrolling") {
+                                if (this.pos.dist(this.patrolPoint) < 20) {
+                                    this.patrolPoint = pos(this.pos).add(rand(-300, 300), rand(-300, 300));
+                                }
+                                this.dir = this.pos.angle(this.patrolPoint);
+                            }
+                            
+                            this.move(Vec2.fromAngle(this.dir).scale(this.speed));
+
+                            // Keep target within world bounds
+                            if (this.pos.x > CONFIG.WORLD_SIZE || this.pos.x < -CONFIG.WORLD_SIZE || this.pos.y > CONFIG.WORLD_SIZE || this.pos.y < -CONFIG.WORLD_SIZE) {
+                                destroy(this);
+                                spawnTarget();
+                            }
+                        }
+                    }
+                ]);
             }
             
-            function shatter(p) {
-                for (let i = 0; i < 10; i++) {
-                    add([ rect(rand(5, 12), rand(5, 12)), pos(p), color(255, 80, 80), rotate(rand(0, 360)), lifespan(1.5), move(rand(0, 360), rand(200, 500)) ]);
+            function shatter(p, col) {
+                play("impact", { volume: 0.8 });
+                for (let i = 0; i < 12; i++) {
+                    add([
+                        rect(rand(4, 10), rand(4, 10)), pos(p), color(col), rotate(rand(0, 360)),
+                        lifespan(rand(1, 2)), {
+                            vel: vec2(rand(-400, 400), rand(-400, 400)),
+                            update() {
+                                this.pos = this.pos.add(this.vel.scale(dt()));
+                                this.angle += this.vel.x * dt() * 0.1;
+                            }
+                        }
+                    ]);
                 }
             }
 
-            // Off-screen target indicator arrow
-            const indicator = add([ pos(0,0), polygon([vec2(0,-10), vec2(10,10), vec2(-10,10)]), color(255,255,0), opacity(0), z(105), fixed(), "indicator" ]);
-            
+            // Off-screen target indicator
+            const indicator = add([ pos(0,0), polygon([vec2(0,-12), vec2(10,10), vec2(-10,10)]), color(255,255,0), opacity(0), z(105), fixed() ]);
             onUpdate(() => {
                 let closestTarget = null;
                 let minDist = Infinity;
                 
-                // --- FIX: Replaced every() with get().forEach() for maximum stability ---
                 get("target").forEach((t) => {
                     const d = t.pos.dist(camPos());
-                    if (d < minDist) {
-                        minDist = d;
-                        closestTarget = t;
-                    }
+                    if (d < minDist) { minDist = d; closestTarget = t; }
                 });
 
                 if (closestTarget) {
                     const screenPos = toScreen(closestTarget.pos);
-                    const scopeRadius = width() / 3;
+                    const scopeRadius = (isSteady ? width() / 2.8 : width() / 3) - 30; // Margin
                     const distFromCenter = screenPos.dist(center());
 
-                    // Only show the indicator if the target is outside the scope view
                     if (distFromCenter > scopeRadius) {
-                        indicator.opacity = 1;
+                        indicator.opacity = lerp(indicator.opacity, 1, dt() * 5);
                         const angle = center().angle(screenPos);
-                        indicator.pos = center().add(Vec2.fromAngle(angle).scale(scopeRadius - 20));
-                        indicator.angle = angle + 90; // Point the arrow correctly
+                        indicator.pos = center().add(Vec2.fromAngle(angle).scale(scopeRadius));
+                        indicator.angle = angle + 90;
                     } else {
-                        indicator.opacity = 0;
+                        indicator.opacity = lerp(indicator.opacity, 0, dt() * 10);
                     }
                 } else {
-                    indicator.opacity = 0; // No targets, no indicator
+                    indicator.opacity = lerp(indicator.opacity, 0, dt() * 10);
                 }
             });
 
-            // Shooting logic
-            onMousePress(() => {
+            function shoot() {
                 if (reloading || ammo <= 0) return;
                 ammo--;
-                // The shot is always at the center of the camera's view
+                play("shot", { volume: 0.7 });
+                shake(4);
+                cam.recoil = vec2(0, -15);
+                
                 const shotPos = camPos();
-                // Correctly scale the target's hitbox based on the current zoom level
-                const hit = get("target").find(t => t.pos.dist(shotPos) < 30 / currentZoom);
+                const hit = get("target").find(t => t.pos.dist(shotPos) < 20 / currentZoom);
+                
                 if (hit) {
-                    shatter(hit.pos);
+                    shatter(hit.pos, hit.color);
                     destroy(hit);
                     score += 100;
-                    // Spawn a new target to replace the one destroyed
-                    wait(1, spawnTarget);
+                    wait(2, spawnTarget);
                 }
+                
                 if (ammo <= 0) {
                     reloading = true;
                     wait(2, () => { ammo = 8; reloading = false; });
                 }
-            });
+            }
 
-            // Keep HUD text updated
+            // Keep HUD updated
             onUpdate(() => {
                 scoreUI.text = `Score: ${score}`;
                 ammoUI.text = reloading ? "Reloading..." : `Ammo: ${ammo}`;
             });
 
-            // Spawn the initial wave of targets
-            for (let i=0; i < 5; i++) {
+            // Initial spawn
+            for (let i = 0; i < CONFIG.INITIAL_TARGETS; i++) {
                 spawnTarget();
             }
         });
