@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Telescope Hunter - First Person Edition</title>
+    <title>Telescope Hunter - Corrected Edition</title>
     <script src="https://unpkg.com/kaboom@3000/dist/kaboom.js"></script>
     <style>
         body, html { margin: 0; padding: 0; overflow: hidden; background: #000; }
@@ -21,7 +21,7 @@
         });
 
         // --- GAME CONFIGURATION ---
-        const WORLD_SIZE = 4000; // The world is much larger than the screen
+        const WORLD_SIZE = 4000;
         const MIN_ZOOM = 0.5;
         const MAX_ZOOM = 3;
 
@@ -33,7 +33,6 @@
             let currentZoom = 1;
 
             // --- WORLD SETUP ---
-            // Create a starry background that fills the entire world
             for (let i = 0; i < 200; i++) {
                 add([
                     circle(rand(1, 3)),
@@ -43,7 +42,6 @@
             }
             
             // --- TELESCOPE VIEW & UI ---
-            // This component draws the black mask outside the scope's view
             add([
                 fixed(),
                 z(100),
@@ -51,47 +49,19 @@
                     draw() {
                         const scopeRadius = width() / 3;
                         // Four rectangles to create the black bars (vignette)
-                        drawRect({
-                            width: width(),
-                            height: height() / 2 - scopeRadius,
-                            pos: vec2(0, 0),
-                            color: BLACK,
-                        });
-                        drawRect({
-                            width: width(),
-                            height: height() / 2 - scopeRadius,
-                            pos: vec2(0, height() / 2 + scopeRadius),
-                            color: BLACK,
-                        });
-                        drawRect({
-                            width: width() / 2 - scopeRadius,
-                            height: height(),
-                            pos: vec2(0, 0),
-                            color: BLACK,
-                        });
-                        drawRect({
-                            width: width() / 2 - scopeRadius,
-                            height: height(),
-                            pos: vec2(width() / 2 + scopeRadius, 0),
-                            color: BLACK,
-                        });
-                        // A border for the scope
-                        drawCircle({
-                            pos: center(),
-                            radius: scopeRadius,
-                            outline: { color: WHITE, width: 2 },
-                            fill: false,
-                        });
+                        drawRect({ width: width(), height: height() / 2 - scopeRadius, pos: vec2(0, 0), color: BLACK });
+                        drawRect({ width: width(), height: height() / 2 - scopeRadius, pos: vec2(0, height() / 2 + scopeRadius), color: BLACK });
+                        drawRect({ width: width() / 2 - scopeRadius, height: height(), pos: vec2(0, 0), color: BLACK });
+                        drawRect({ width: width() / 2 - scopeRadius, height: height(), pos: vec2(width() / 2 + scopeRadius, 0), color: BLACK });
+                        drawCircle({ pos: center(), radius: scopeRadius, outline: { color: WHITE, width: 2 }, fill: false });
                     },
                 },
             ]);
 
-            // Create a detailed crosshair
             function drawCrosshair() {
                 const centerPos = center();
                 const lineLength = 25;
                 const gap = 3;
-                // Main lines
                 drawLine({ p1: centerPos.sub(lineLength, 0), p2: centerPos.sub(gap, 0), color: RED, width: 1 });
                 drawLine({ p1: centerPos.add(lineLength, 0), p2: centerPos.add(gap, 0), color: RED, width: 1 });
                 drawLine({ p1: centerPos.sub(0, lineLength), p2: centerPos.sub(0, gap), color: RED, width: 1 });
@@ -99,68 +69,59 @@
             }
             add([ fixed(), z(101), { draw: drawCrosshair } ]);
 
-            // HUD Elements
             const scoreUI = add([ text("Score: 0"), pos(20, 20), fixed(), z(110) ]);
             const ammoUI = add([ text("Ammo: 8"), pos(width() - 20, 20), anchor("topright"), fixed(), z(110) ]);
 
             // --- CAMERA & CONTROLS ---
-            // The camera will smoothly follow the mouse
             onUpdate(() => {
                 const targetCamPos = camPos().lerp(mousePos(), dt() * 2);
-                // Clamp camera position to stay within the world bounds
                 camPos(
                     clamp(targetCamPos.x, -WORLD_SIZE, WORLD_SIZE),
                     clamp(targetCamPos.y, -WORLD_SIZE, WORLD_SIZE)
                 );
             });
 
-            // Zoom functionality
-            onWheel((delta) => {
-                currentZoom -= delta.y * 0.001;
+            // ===================================
+            // == CORRECTED ZOOM FUNCTIONALITY  ==
+            // ===================================
+            // The 'wheel' event is a native browser event, not a Kaboom function[2][5].
+            // We attach it directly to the game's canvas element provided by Kaboom.
+            canvas.addEventListener("wheel", (e) => {
+                // Prevent the browser page from scrolling
+                e.preventDefault();
+                
+                // Adjust zoom based on scroll direction
+                currentZoom -= e.deltaY * 0.001;
                 currentZoom = clamp(currentZoom, MIN_ZOOM, MAX_ZOOM);
                 camScale(currentZoom);
             });
+            // ===================================
+            // ==       END OF FIX              ==
+            // ===================================
+
 
             // --- TARGET & GAMEPLAY SYSTEMS ---
             function spawnTarget() {
                 const spawnAngle = rand(0, 360);
                 const spawnDist = rand(800, WORLD_SIZE * 0.9);
                 const spawnPos = camPos().add(Vec2.fromAngle(spawnAngle).scale(spawnDist));
-                
-                add([
-                    circle(30),
-                    pos(spawnPos),
-                    color(255, 80, 80),
-                    area(),
-                    outline(3, WHITE),
-                    "target",
-                ]);
+                add([ circle(30), pos(spawnPos), color(255, 80, 80), area(), outline(3, WHITE), "target" ]);
             }
             
             function shatter(p) {
                 for (let i = 0; i < 10; i++) {
-                    add([
-                        rect(rand(5, 12), rand(5, 12)), pos(p), color(255, 80, 80), rotate(rand(0, 360)),
-                        lifespan(1.5), move(rand(0, 360), rand(200, 500)),
-                    ]);
+                    add([ rect(rand(5, 12), rand(5, 12)), pos(p), color(255, 80, 80), rotate(rand(0, 360)), lifespan(1.5), move(rand(0, 360), rand(200, 500)) ]);
                 }
             }
 
-            // Create off-screen target indicators
-            const indicator = add([
-                pos(0,0), polygon([vec2(0,-10), vec2(10,10), vec2(-10,10)]), color(255,255,0), opacity(0), z(105), fixed(), "indicator"
-            ]);
+            const indicator = add([ pos(0,0), polygon([vec2(0,-10), vec2(10,10), vec2(-10,10)]), color(255,255,0), opacity(0), z(105), fixed(), "indicator" ]);
             onUpdate(() => {
                 let closestTarget = null;
                 let minDist = Infinity;
                 
-                // Find the closest target
                 every("target", (t) => {
                     const d = t.pos.dist(camPos());
-                    if (d < minDist) {
-                        minDist = d;
-                        closestTarget = t;
-                    }
+                    if (d < minDist) { minDist = d; closestTarget = t; }
                 });
 
                 if (closestTarget) {
@@ -172,7 +133,7 @@
                         indicator.opacity = 1;
                         const angle = center().angle(screenPos);
                         indicator.pos = center().add(Vec2.fromAngle(angle).scale(scopeRadius - 20));
-                        indicator.angle = angle + 90; // Point the arrow
+                        indicator.angle = angle + 90;
                     } else {
                         indicator.opacity = 0;
                     }
@@ -181,13 +142,11 @@
                 }
             });
 
-            // Shooting logic
             onMousePress(() => {
                 if (reloading || ammo <= 0) return;
                 ammo--;
-                // The shot is always at the center of the camera's view
                 const shotPos = camPos();
-                const hit = get("target").find(t => t.pos.dist(shotPos) < 30 / camScale());
+                const hit = get("target").find(t => t.pos.dist(shotPos) < 30 / currentZoom);
                 if (hit) {
                     shatter(hit.pos);
                     destroy(hit);
@@ -196,26 +155,20 @@
                 }
                 if (ammo <= 0) {
                     reloading = true;
-                    wait(2, () => {
-                        ammo = 8;
-                        reloading = false;
-                    });
+                    wait(2, () => { ammo = 8; reloading = false; });
                 }
             });
 
-            // Update HUD text
             onUpdate(() => {
                 scoreUI.text = `Score: ${score}`;
                 ammoUI.text = reloading ? "Reloading..." : `Ammo: ${ammo}`;
             });
 
-            // Initial wave of targets
             for (let i=0; i < 5; i++) {
                 spawnTarget();
             }
         });
 
-        // --- Start the Game ---
         go("game");
     </script>
 </body>
